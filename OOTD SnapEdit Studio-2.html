@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="OOTD SnapEdit Studio: build editorial colour-block layouts with cutout shapes and typography.">
+<title>OOTD SnapEdit Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700&family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f9f9f9;--ink:#000;--serif:'Bodoni Moda','Didot','Bodoni 72',Georgia,serif;--sans:'Montserrat',system-ui,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--sans)}
+.skip{position:absolute;left:-999px;top:8px;background:#000;color:#fff;padding:10px 14px;z-index:20}
+.skip:focus{left:8px}
+:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--ink)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.top{border-bottom:1px solid #000}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:16px;padding-bottom:16px;gap:16px;flex-wrap:wrap}
+.logo{font:500 24px var(--serif);letter-spacing:.02em;text-decoration:none;color:inherit}
+nav{display:flex;gap:24px}
+nav a{color:inherit;font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:6px 0;border-bottom:1px solid transparent}
+nav a:hover{border-color:#000}
+.hero{padding:56px 0 32px}
+.eyebrow{font:600 11px var(--sans);letter-spacing:.3em;text-transform:uppercase;margin:0 0 12px}
+h1,h2{font-family:var(--serif);font-weight:500;margin:0;line-height:1}
+h1{font-size:clamp(44px,9vw,120px);letter-spacing:-.02em}
+h1 em{font-style:italic;font-weight:400}
+.lead{max-width:540px;margin:20px 0 0}
+.module{border-top:1px solid #000;border-bottom:1px solid #000}
+.studio{display:grid;grid-template-columns:360px 1fr}
+.ctrl{border-right:1px solid #000;padding:0}
+fieldset{border:0;border-bottom:1px solid #000;margin:0;padding:20px 24px}
+legend{float:left;width:100%;font:500 22px var(--serif);padding:0;margin:0 0 12px}
+legend+*{clear:both}
+label,.lab{display:block;font:600 10px var(--sans);letter-spacing:.2em;text-transform:uppercase;margin:12px 0 5px}
+input[type=range]{width:100%;accent-color:#000;height:24px}
+input[type=text],select{width:100%;padding:10px;border:1px solid #000;border-radius:0;background:#fff;color:#000;font:400 14px var(--sans)}
+input[type=color]{width:44px;height:40px;padding:2px;border:1px solid #000;border-radius:0;background:#fff;cursor:pointer}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+button{border:1px solid #000;background:#fff;color:#000;padding:9px 12px;min-height:40px;font:600 10px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border-radius:0}
+button:hover,button[aria-pressed=true]{background:#000;color:#fff}
+.sw{width:40px;padding:0}
+.note{font-size:12px;margin:8px 0 0}
+#export{width:100%;margin:0;padding:16px;background:#000;color:#fff;font-size:12px}
+#export:hover{background:#fff;color:#000}
+.stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:12px}
+#frame{height:min(78vh,760px);aspect-ratio:4/5;max-width:100%;border:1px solid #000;position:relative;background:#fff}
+#frame.drag{outline:3px dashed #000;outline-offset:6px}
+canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.cap{font-size:12px;margin:0;text-align:center}
+.next{padding:56px 0}
+.next h2{font-size:clamp(28px,4vw,44px)}
+.slot{border:1px dashed #000;padding:32px;margin-top:20px;text-align:center}
+footer{border-top:1px solid #000;padding:20px 0 28px;font-size:12px}
+#modal{position:fixed;inset:0;background:rgba(249,249,249,.97);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:16px;z-index:9}
+#modal img{max-height:74vh;max-width:90vw;border:1px solid #000}
+#dl{display:inline-block;background:#000;color:#fff;text-decoration:none;padding:12px 16px;font:600 10px var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:860px){.studio{grid-template-columns:1fr}.ctrl{border-right:0;border-top:1px solid #000;order:2}#frame{height:auto;width:100%}.wrap{padding:0 16px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body>
+<a class="skip" href="#studio">Skip to the studio</a>
+<header class="top"><div class="wrap"><a class="logo" href="#">OOTD</a>
+<nav aria-label="Main"><a href="#studio">Studio</a><a href="#more">Coming soon</a></nav></div></header>
+
+<main>
+<section class="wrap hero" aria-labelledby="h">
+<p class="eyebrow">SnapEdit Studio</p>
+<h1 id="h">Your look, <em>edited.</em></h1>
+<p class="lead">Upload an outfit photo, frame it in colour, cut out shapes and set your words in type. Everything happens in your browser, so your photo never leaves your device.</p></section>
+
+<div class="module"><div class="wrap" style="padding:0"><section id="studio" class="studio" aria-label="OOTD SnapEdit Studio">
+<form class="ctrl" onsubmit="return false" aria-label="Editing controls">
+<fieldset><legend>1. Photo</legend>
+<input type="file" id="file" accept="image/*" class="sr" aria-label="Upload photo">
+<button type="button" id="pick" style="width:100%">Upload photo</button>
+<p class="note">Or drop an image onto the preview.</p></fieldset>
+
+<fieldset><legend>2. Frame</legend>
+<div class="row" role="group" aria-label="Frame style"><button type="button" id="m-split" aria-pressed="true">Split screen</button><button type="button" id="m-frame" aria-pressed="false">Full frame</button></div>
+<label for="color">Frame colour</label>
+<div class="row"><input type="color" id="color" value="#ff1e8e">
+<button type="button" class="sw" data-c="#ff1e8e" style="background:#ff1e8e" aria-label="Hot pink"></button>
+<button type="button" class="sw" data-c="#1f3bff" style="background:#1f3bff" aria-label="Electric blue"></button>
+<button type="button" class="sw" data-c="#b6ff00" style="background:#b6ff00" aria-label="Lime green"></button>
+<button type="button" class="sw" data-c="#ff5a1f" style="background:#ff5a1f" aria-label="Orange"></button></div>
+<label for="panel">Panel / frame size</label><input type="range" id="panel" min="5" max="60" value="40"></fieldset>
+
+<fieldset><legend>3. Shapes</legend>
+<div class="row" id="shapes" role="group" aria-label="Shape"><button type="button" data-s="star" aria-pressed="true">Star</button><button type="button" data-s="heart" aria-pressed="false">Heart</button><button type="button" data-s="diamond" aria-pressed="false">Diamond</button><button type="button" data-s="circle" aria-pressed="false">Circle</button></div>
+<span class="lab">Layout</span>
+<div class="row" id="presets" role="group" aria-label="Layout preset"><button type="button" data-p="left" aria-pressed="false">Left column</button><button type="button" data-p="center" aria-pressed="false">Center</button><button type="button" data-p="scatter" aria-pressed="true">Scattered</button></div>
+<label for="scale">Scale</label><input type="range" id="scale" min="30" max="220" value="100">
+<div class="row" style="margin-top:10px"><button type="button" id="add">Add shape</button><button type="button" id="del">Remove shape</button></div>
+<p class="note">Drag shapes on the preview. With keyboard: focus the preview, press Enter to choose the next item, arrow keys to move it (Shift for bigger steps).</p></fieldset>
+
+<fieldset><legend>4. Typography</legend>
+<label for="t1">Title</label><input type="text" id="t1" value="trust the process">
+<label for="t2">Subheading</label><input type="text" id="t2" value="OOTD / SS26">
+<label for="font">Font</label>
+<select id="font"><option value="'Bodoni Moda', 'Didot', serif" data-w="500">Bodoni (high-fashion serif)</option><option value="'Playfair Display', Georgia, serif" data-w="500">Playfair (editorial serif)</option><option value="'Montserrat', sans-serif" data-w="700">Montserrat (geometric sans)</option></select>
+<span class="lab">Text colour</span>
+<div class="row" id="tcol" role="group" aria-label="Text colour"><button type="button" data-t="#ffffff" aria-pressed="true">White</button><button type="button" data-t="#000000" aria-pressed="false">Black</button></div>
+<label for="ts">Size</label><input type="range" id="ts" min="30" max="200" value="90">
+<label for="tt">Tracking</label><input type="range" id="tt" min="-5" max="40" value="2">
+<span class="lab">Alignment</span>
+<div class="row" id="align" role="group" aria-label="Alignment"><button type="button" data-a="left" aria-pressed="false">Left</button><button type="button" data-a="center" aria-pressed="true">Center</button><button type="button" data-a="right" aria-pressed="false">Right</button></div>
+<label style="display:flex;gap:8px;align-items:center;text-transform:none;letter-spacing:0;font-size:13px;font-weight:400"><input type="checkbox" id="up"> Uppercase</label></fieldset>
+
+<fieldset style="border:0"><button type="button" id="export">Export layout (PNG)</button></fieldset>
+</form>
+
+<div class="stage"><div id="frame"><canvas id="cv" width="1080" height="1350" tabindex="0" role="img" aria-label="Layout preview. Drag shapes and text, or use the arrow keys."></canvas></div>
+<p class="cap" id="cap">Preview · 1080 × 1350 px</p><p class="sr" id="live" aria-live="polite"></p></div>
+</section></div></div>
+
+<section class="wrap next" id="more" aria-labelledby="mh"><p class="eyebrow">What's next</p><h2 id="mh">More features, soon.</h2>
+<div class="slot"><p style="margin:0">Space reserved for the next tool.</p></div></section>
+</main>
+<footer><div class="wrap">© OOTD SnapEdit · Photos are processed locally in your browser.</div></footer>
+
+<div id="modal" role="dialog" aria-modal="true" aria-label="Exported image"><img id="out" alt="Your exported layout"><div class="row"><a id="dl" download="ootd-layout.png">Download PNG</a><button type="button" id="close">Close</button></div><p class="note">If the download doesn't start, right-click or long-press the image to save it.</p></div>
+
+<script>
+const W=1080,H=1350,cv=document.getElementById('cv'),ctx=cv.getContext('2d'),$=id=>document.getElementById(id);
+const S={mode:'split',shape:'star',scale:100,panel:40,color:'#ff1e8e',tc:'#ffffff',al:'center',img:null,sel:0,
+ shapes:[],texts:[{k:'t1',x:.5,y:.8,m:1,n:'Title'},{k:'t2',x:.5,y:.9,m:.38,n:'Subheading'}]};
+const PRE={left:[[.2,.2],[.2,.5],[.2,.8]],center:[[.5,.45]],scatter:[[.18,.2],[.7,.18],[.45,.5],[.2,.75],[.78,.62]]};
+const preset=p=>{S.shapes=PRE[p].map(([x,y])=>({x,y}));S.sel=0;};preset('scatter');
+const rad=()=>W*.12*S.scale/100, items=()=>[...S.shapes,...S.texts];
+
+function path(c,t,x,y,r){c.beginPath();
+ if(t==='circle')c.arc(x,y,r,0,7);
+ else if(t==='diamond'){c.moveTo(x,y-r*1.2);c.lineTo(x+r*.8,y);c.lineTo(x,y+r*1.2);c.lineTo(x-r*.8,y);c.closePath();}
+ else if(t==='star'){for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,q=i%2?r*.382:r,px=x+Math.cos(a)*q,py=y+Math.sin(a)*q;i?c.lineTo(px,py):c.moveTo(px,py);}c.closePath();}
+ else{const k=r/16.5;for(let i=0;i<=100;i++){const u=i/100*Math.PI*2,hx=16*Math.sin(u)**3,hy=-(13*Math.cos(u)-5*Math.cos(2*u)-2*Math.cos(3*u)-Math.cos(4*u));
+  const px=x+hx*k,py=y+hy*k+r*.08;i?c.lineTo(px,py):c.moveTo(px,py);}c.closePath();}}
+function region(c){c.beginPath();if(S.mode==='split')c.rect(0,0,W*S.panel/100,H);else{const b=W*S.panel/100*.35;c.rect(0,0,W,H);c.rect(b,b,W-2*b,H-2*b);}}
+const layer=()=>{const o=document.createElement('canvas');o.width=W;o.height=H;return o;};
+
+function render(ex){
+ ctx.clearRect(0,0,W,H);
+ if(S.img){const s=Math.max(W/S.img.width,H/S.img.height),w=S.img.width*s,h=S.img.height*s;ctx.drawImage(S.img,(W-w)/2,(H-h)/2,w,h);}
+ else{const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#2b2b2b');g.addColorStop(1,'#9a9a9a');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,.7)';ctx.font="600 34px Montserrat,sans-serif";ctx.textAlign='center';ctx.fillText('DROP YOUR PHOTO HERE',W*.68,H*.32);}
+ const r=rad(),A=layer(),a=A.getContext('2d');a.fillStyle=S.color;region(a);a.fill('evenodd');
+ a.globalCompositeOperation='destination-out';S.shapes.forEach(s=>{path(a,S.shape,s.x*W,s.y*H,r);a.fill();});
+ const B=layer(),b=B.getContext('2d');b.fillStyle=S.color;S.shapes.forEach(s=>{path(b,S.shape,s.x*W,s.y*H,r);b.fill();});
+ b.globalCompositeOperation='destination-out';region(b);b.fill('evenodd');
+ ctx.drawImage(A,0,0);ctx.drawImage(B,0,0);
+ const tr=+$('tt').value,o=$('font').selectedOptions[0];ctx.textBaseline='middle';ctx.fillStyle=S.tc;
+ S.texts.forEach(t=>{let txt=$(t.k).value;if($('up').checked)txt=txt.toUpperCase();const sz=+$('ts').value*t.m;
+  ctx.font=`${o.dataset.w} ${sz}px ${$('font').value}`;ctx.textAlign='left';
+  let w=0;for(const ch of txt)w+=ctx.measureText(ch).width+tr*sz/100;w-=tr*sz/100;
+  const ax=t.x*W,x0=S.al==='left'?ax:S.al==='right'?ax-w:ax-w/2;t.box={x0,w,h:sz,cy:t.y*H};
+  let x=x0;for(const ch of txt){ctx.fillText(ch,x,t.y*H);x+=ctx.measureText(ch).width+tr*sz/100;}});
+ if(!ex&&document.activeElement===cv){const it=items()[S.sel];if(it){ctx.save();ctx.lineWidth=5;ctx.strokeStyle='#000';ctx.setLineDash([14,10]);
+  if(it.box)ctx.strokeRect(it.box.x0-12,it.box.cy-it.box.h*.7,it.box.w+24,it.box.h*1.4);else{ctx.beginPath();ctx.arc(it.x*W,it.y*H,r*1.3,0,7);ctx.stroke();}ctx.restore();}}
+}
+const R=()=>render();
+
+// pointer dragging
+let drag=null;const pos=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};};
+cv.addEventListener('pointerdown',e=>{const p=pos(e),r=rad(),all=items();
+ for(let i=S.texts.length-1;i>=0;i--){const t=S.texts[i],b=t.box;if(b&&p.x>b.x0-10&&p.x<b.x0+b.w+10&&Math.abs(p.y-b.cy)<b.h*.7){drag={o:t,dx:p.x/W-t.x,dy:p.y/H-t.y};break;}}
+ if(!drag)for(let i=S.shapes.length-1;i>=0;i--){const s=S.shapes[i];if(Math.hypot(p.x-s.x*W,p.y-s.y*H)<r*1.05){drag={o:s,dx:p.x/W-s.x,dy:p.y/H-s.y};S.shapes.push(S.shapes.splice(i,1)[0]);break;}}
+ if(drag){S.sel=items().indexOf(drag.o);cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing';}});
+cv.addEventListener('pointermove',e=>{if(!drag)return;const p=pos(e);drag.o.x=Math.min(1.1,Math.max(-.1,p.x/W-drag.dx));drag.o.y=Math.min(1.1,Math.max(-.1,p.y/H-drag.dy));R();});
+cv.addEventListener('pointerup',()=>{drag=null;cv.style.cursor='grab';});
+// keyboard
+const say=()=>{const i=S.sel,n=i<S.shapes.length?'Shape '+(i+1):S.texts[i-S.shapes.length].n;$('live').textContent='Selected: '+n;};
+cv.addEventListener('focus',()=>{say();R();});cv.addEventListener('blur',R);
+cv.addEventListener('keydown',e=>{const all=items(),it=all[S.sel],st=e.shiftKey?.05:.01;
+ if(e.key==='Enter'||e.key===' '){e.preventDefault();S.sel=(S.sel+1)%all.length;say();}
+ else if(e.key.startsWith('Arrow')&&it){e.preventDefault();if(e.key==='ArrowLeft')it.x-=st;if(e.key==='ArrowRight')it.x+=st;if(e.key==='ArrowUp')it.y-=st;if(e.key==='ArrowDown')it.y+=st;}
+ else return;R();});
+
+// UI wiring
+function grp(id,fn){const g=$(id);g.querySelectorAll('button').forEach(b=>b.onclick=()=>{g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');fn(b.dataset);R();});}
+grp('shapes',d=>S.shape=d.s);grp('presets',d=>preset(d.p));grp('align',d=>S.al=d.a);grp('tcol',d=>S.tc=d.t);
+const setMode=m=>{S.mode=m;$('m-split').setAttribute('aria-pressed',m==='split');$('m-frame').setAttribute('aria-pressed',m==='frame');R();};
+$('m-split').onclick=()=>setMode('split');$('m-frame').onclick=()=>setMode('frame');
+$('color').oninput=e=>{S.color=e.target.value;R();};
+document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{S.color=b.dataset.c;$('color').value=S.color;R();});
+$('panel').oninput=e=>{S.panel=+e.target.value;R();};$('scale').oninput=e=>{S.scale=+e.target.value;R();};
+['t1','t2','font','ts','tt','up'].forEach(id=>$(id).addEventListener('input',R));
+$('add').onclick=()=>{S.shapes.push({x:.3+Math.random()*.5,y:.2+Math.random()*.5});R();};
+$('del').onclick=()=>{S.shapes.pop();S.sel=0;R();};
+
+function load(f){if(!f||!f.type.startsWith('image/'))return;const i=new Image();i.onload=()=>{S.img=i;R();$('live').textContent='Photo loaded';};i.src=URL.createObjectURL(f);}
+$('pick').onclick=()=>$('file').click();$('file').onchange=e=>load(e.target.files[0]);
+const fr=$('frame');
+['dragenter','dragover'].forEach(n=>fr.addEventListener(n,e=>{e.preventDefault();fr.classList.add('drag');}));
+['dragleave','drop'].forEach(n=>fr.addEventListener(n,e=>{e.preventDefault();fr.classList.remove('drag');}));
+fr.addEventListener('drop',e=>load(e.dataTransfer.files[0]));
+
+$('export').onclick=()=>{render(true);cv.toBlob(b=>{R();const u=URL.createObjectURL(b);$('out').src=u;$('dl').href=u;$('modal').style.display='flex';$('dl').focus();},'image/png');};
+$('close').onclick=()=>{$('modal').style.display='none';$('export').focus();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('close').click();});
+
+R();document.fonts.ready.then(R);
+['Bodoni Moda','Playfair Display','Montserrat'].forEach(f=>document.fonts.load(`500 40px '${f}'`).then(R).catch(()=>{}));
+</script></body></html>
